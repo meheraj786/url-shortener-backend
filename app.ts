@@ -8,7 +8,7 @@ import compression from "compression";
 import morgan from "morgan";
 
 import connectDB from "./db.config/dbConnect";
-import router from "./routers"; 
+import router from "./routers";
 import { redirectUrl } from "./controller/url.controller";
 
 const app = express();
@@ -23,12 +23,12 @@ app.use(cookieParser());
 const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || "http://localhost:3000";
 app.use(
   cors({
-    origin: CLIENT_ORIGIN,
+    origin: ["http://localhost:5173", "http://localhost:3000"],
     credentials: true,
   })
 );
 
-app.use(router); 
+app.use(router);
 app.get("/:shortId", redirectUrl);
 
 export default app;
