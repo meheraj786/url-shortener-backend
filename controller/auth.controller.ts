@@ -4,7 +4,6 @@ import jwt from "jsonwebtoken";
 import User from "../models/user.model";
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
-const TOKEN_EXPIRES_MS = 7 * 24 * 60 * 60 * 1000; 
 
 
 export const register = async (req: Request, res: Response) => {
@@ -36,12 +35,11 @@ export const login = async (req: Request, res: Response) => {
     const ok = await bcrypt.compare(password, user.password);
     if (!ok) return res.status(400).json({ message: "Invalid credentials" });
 
-    const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: "7d" });
+    const token = jwt.sign({ userId: user._id }, JWT_SECRET);
 
 res.cookie("token", token, {
   httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  secure: true,
 });
 
     return res.json({ message: "Logged in", userId: user._id, email: user.email });
