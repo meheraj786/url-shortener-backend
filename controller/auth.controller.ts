@@ -38,12 +38,11 @@ export const login = async (req: Request, res: Response) => {
 
     const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: "7d" });
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: TOKEN_EXPIRES_MS,
-    });
+res.cookie("token", token, {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+});
 
     return res.json({ message: "Logged in", userId: user._id, email: user.email });
   } catch (err) {
