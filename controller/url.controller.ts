@@ -25,7 +25,7 @@ export const createShortUrl = async (req: AuthRequest, res: Response) => {
     const owner = req.userId ? req.userId : null;
     const urlDoc = await Url.create({ longUrl, shortId, owner });
 
-    const baseUrl = `${req.protocol}://${req.get("host")}`;
+    const baseUrl = process.env.BASE_URL;
     const shortUrl = `${baseUrl}/${shortId}`;
 
     return res.status(201).json({ shortUrl, id: urlDoc._id });
